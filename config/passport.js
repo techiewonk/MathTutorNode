@@ -37,9 +37,10 @@ module.exports = function(passport) {
         // by default, local strategy uses username and password, we will override with email
         usernameField : 'email',
         passwordField : 'password',
+        firstnameField : 'firstname',
         passReqToCallback : true // allows us to pass back the entire request to the callback
     },
-    function(req, email, password, done) {
+    function(req, email, password, firstname, done) {
 
         // asynchronous
         // User.findOne wont fire unless data is sent back
@@ -64,6 +65,7 @@ module.exports = function(passport) {
                 // set the user's local credentials
                 newUser.local.email    = email;
                 newUser.local.password = newUser.generateHash(password);
+                newUser.local.firstname = firstname;
 
                 // save the user
                 newUser.save(function(err) {
