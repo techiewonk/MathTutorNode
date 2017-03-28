@@ -29,7 +29,7 @@
                         <strong>Last Name</strong>: <%= user.local.lastname %><br>
                         <strong>email</strong>: <%= user.local.email %><br>
                         <strong>password</strong>: <%= user.local.password %>
-                        <strong>Type</strong>: <%= user.local.type %>
+                        <strong>Type</strong>: <%= user.local.job %>
                     </p>
 
             </div>
@@ -41,13 +41,22 @@
                 <h3><span class="fa fa-user"></span> Other Users</h3>
 
                     <p>
-                        <strong>THIS NEEDS TO BE REPLACED WITH A FUNCTION</strong><br>
-                        
-                        <strong>id</strong>: <%= user._id %><br>
-                        <strong>First Name</strong>: <%= user.local.firstname %><br>
-                        <strong>Last Name</strong>: <%= user.local.lastname %><br>
-                        <strong>email</strong>: <%= user.local.email %><br>
-                        <strong>password</strong>: <%= user.local.password %>
+                        <% if( Array.isArray(people) ) { %>
+                        <ul>
+                        <%people.forEach( function( us ){ %>
+                        <strong>id</strong>: <%= us._id %><br>
+                        <strong>First Name</strong>: <%= us.local.firstname %><br>
+                        <strong>Last Name</strong>: <%= us.local.lastname %><br>
+                        <strong>email</strong>: <%= us.local.email %><br>
+                        <strong>Type</strong>: <%= us.local.job %><br>
+                        <hr>
+                        <% })} else { %>
+                        <b>
+                        Id: <%= us.local.firstname %>
+                        Name: <%= us.local.lastname %>
+                        Price: $<%= us.local.email %>
+                        </b>
+                        <% }; %>
                     </p>
 
             </div>
