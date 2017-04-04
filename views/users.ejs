@@ -1,4 +1,5 @@
-<!-- views/profile.ejs -->
+<!-- views/users.ejs -->
+
 <!doctype html>
 <html>
 <head>
@@ -13,7 +14,7 @@
 <div class="container">
 
     <div class="page-header text-center">
-        <h1><span class="fa fa-anchor"></span>Your Profile Page</h1>
+        <h1><span class="fa fa-anchor"></span> User Listing Page</h1>
         <a href="/logout" class="btn btn-default btn-sm">Logout</a>
     </div>
 
@@ -22,16 +23,14 @@
         <!-- LOCAL INFORMATION -->
         <div class="col-sm-6">
             <div class="well">
-                <h3><span class="fa fa-user"></span> Local Test</h3>
+                <h3><span class="fa fa-user"></span> Local</h3>
 
                     <p>
                         <strong>First Name</strong>: <%= user.local.firstname %><br>
                         <strong>Last Name</strong>: <%= user.local.lastname %><br>
                         <strong>email</strong>: <%= user.local.email %><br>
                         <strong>password</strong>: <%= user.local.password %>
-                        <strong>Type</strong>: <%= user.local.job %><br>
-                        - <a href="/update">Edit Account</a>
-                        
+                        <strong>Type</strong>: <%= user.local.job %>
                     </p>
 
             </div>
@@ -40,7 +39,7 @@
         <!-- GLOBAL INFORMATION -->
         <div class="col-sm-6">
             <div class="well">
-                <h3><span class="fa fa-user"></span>Users</h3>
+                <h3><span class="fa fa-user"></span> Other Users</h3>
 
                     <p>
                         <% if( Array.isArray(people) ) { %>

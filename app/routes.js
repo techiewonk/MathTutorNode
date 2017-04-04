@@ -48,16 +48,17 @@ module.exports = function(app, passport) {
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
+    
     app.get('/profile', isLoggedIn, function(req, res) {
         User.find({},function(err,usrs){
-            console.log("\nUsers: ");
-            console.log(usrs);
-            renderResult(res,usrs,"User List",req.user)
+            //console.log("\nUsers: ");
+            //console.log(usrs);
+            renderResult(res,usrs,"User List",req.user,'profile')
         });
     });
 
-    function renderResult(res,usrs,msg,user){
-        res.render('profile.ejs', {message: msg, people:usrs, user : user}, 
+    function renderResult(res,usrs,msg,user,page){
+        res.render(page + '.ejs', {message: msg, people:usrs, user : user}, 
             function (err,result){
                 if (!err){res.end(result);}
                 else {res.end('Oops!');
@@ -65,6 +66,49 @@ module.exports = function(app, passport) {
 
             });
     }
+
+    // =====================================
+    // EDIT USER ===========================
+    // =====================================
+    
+    app.get('/update', isLoggedIn, function(req, res){
+        res.render('update.ejs', {
+            message: req.flash('updateMessage'),
+            user : req.user
+        });
+    })
+
+    // process the update form
+    app.post('/update', isLoggedIn, function(req, res){
+        console.log(req.session.passport.user);
+        console.log(req.user);
+        console.log(req.user.local.email);
+        User.update({_id:req.session.passport.user}, {
+            'local.firstname' : req.body.firstname
+        }, function(err, numberAffected,rawResponse) {
+            console.log(req.body.firstname);
+            console.log('profile update error');
+        });
+        res.render('index.ejs', {
+            user : req.user
+        });
+    });
+
+    // =====================================
+    // USERLIST SECTION ====================
+    // =====================================
+    // copied from the profile code
+    // we will want this protected so you have to be logged in to visit
+    // we will use route middleware to verify this (the isLoggedIn function)
+    
+    app.get('/users', isLoggedIn, function(req, res) {
+        User.find({},function(err,usrs){
+            //console.log("\nUsers: ");
+            //console.log(usrs);
+            renderResult(res,usrs,"User List",req.user,'users')
+        });
+    });
+    
 
     // =====================================
     // FORGOT PASS =========================

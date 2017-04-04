@@ -66,7 +66,6 @@ module.exports = function(passport) {
                 newUser.local.password = newUser.generateHash(password);
                 newUser.local.firstname = req.body.firstname;
                 newUser.local.lastname = req.body.lastname;
-                console.log("job is "+ req.body.jobRadio);
                 newUser.local.job = req.body.jobRadio;
 
                 // save the user
@@ -117,5 +116,7 @@ module.exports = function(passport) {
         });
 
     }));
+
+    // LOCAL UPDATE
 
 };
