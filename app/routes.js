@@ -17,7 +17,7 @@ module.exports = function(app, passport) {
     app.get('/login', function(req, res) {
 
         // render the page and pass in any flash data if it exists
-        res.render('login.ejs', { message: req.flash('loginMessage') }); 
+        res.render('login.ejs', { message: req.flash('loginMessage') });
     });
 
     // process the login form
@@ -44,11 +44,19 @@ module.exports = function(app, passport) {
         failureFlash : true // allow flash messages
     }));
     // =====================================
+    // PAYMENT SECTIONS =====================
+    // =====================================
+    // app.get('/payment', function(req, res){
+    //   res.render('payment.ejs');
+    // });
+
+
+    // =====================================
     // PROFILE SECTION =====================
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    
+
     app.get('/profile', isLoggedIn, function(req, res) {
         User.find({},function(err,usrs){
             //console.log("\nUsers: ");
@@ -58,7 +66,7 @@ module.exports = function(app, passport) {
     });
 
     function renderResult(res,usrs,msg,user,page){
-        res.render(page + '.ejs', {message: msg, people:usrs, user : user}, 
+        res.render(page + '.ejs', {message: msg, people:usrs, user : user},
             function (err,result){
                 if (!err){res.end(result);}
                 else {res.end('Oops!');
@@ -70,7 +78,7 @@ module.exports = function(app, passport) {
     // =====================================
     // EDIT USER ===========================
     // =====================================
-    
+
     app.get('/update', isLoggedIn, function(req, res){
         res.render('update.ejs', {
             message: req.flash('updateMessage'),
@@ -100,7 +108,7 @@ module.exports = function(app, passport) {
     // copied from the profile code
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    
+
     app.get('/users', isLoggedIn, function(req, res) {
         User.find({},function(err,usrs){
             //console.log("\nUsers: ");
@@ -108,7 +116,7 @@ module.exports = function(app, passport) {
             renderResult(res,usrs,"User List",req.user,'users')
         });
     });
-    
+
 
     // =====================================
     // FORGOT PASS =========================
@@ -134,7 +142,7 @@ module.exports = function(app, passport) {
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
 
-    // if user is authenticated in the session, carry on 
+    // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
 
