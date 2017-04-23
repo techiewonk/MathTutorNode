@@ -127,10 +127,20 @@ module.exports = function(app, passport) {
     });
 
     app.post('/search', isLoggedIn, function(req,res){
-        console.log('test');
-        // figure out how to write a search function. 
-        // try not to cry
-        renderResult(res,false,"Tutors",req.user,'search')
+        console.log(req.body.searchbox);
+
+        // currently just searches through first and last names. 
+        
+        User.find(
+            { $or: [
+                {"local.firstname": { $regex : req.body.searchbox, $options : 'i'}},
+                {"local.lastname": { $regex : req.body.searchbox, $options : 'i'}}]},
+            function(err,usrs){
+            console.log("\nTutors");
+            console.log(usrs);
+            renderResult(res,usrs,"Tutors",req.user,'search')
+        })
+        
     })
 
     // =====================================

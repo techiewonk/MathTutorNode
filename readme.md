@@ -11,3 +11,7 @@ Going to continue with Refactoring Basic Authenticated:
 
 Woring on a free sandbox MongoDB from mlab:
 	- http://mlab.com
+
+Search function - used Reds module
+	- https://github.com/tj/reds (documentation)
+	- https://medium.com/@stockholmux/reds-internals-searching-and-better-searching-with-node-js-and-redis-57da99077e83 (guide for using)
