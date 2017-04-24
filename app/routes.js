@@ -46,9 +46,63 @@ module.exports = function(app, passport) {
     // =====================================
     // PAYMENT SECTIONS =====================
     // =====================================
-    // app.get('/payment', function(req, res){
-    //   res.render('payment.ejs');
-    // });
+    // setup braintree
+    // process payment
+    // redirect to videos tutoring session
+
+    var bodyParser   = require('body-parser');
+    var parseUrlEnconded = bodyParser.urlencoded({
+      extended: false
+    });
+    // Braintree Sandbox env. use to connect to Braintree payments.
+    // will have to re-factor code in a env file for security (future task)
+    var braintree = require('braintree');
+    var gateway = braintree.connect({
+        environment:  braintree.Environment.Sandbox,
+        merchantId:   'pyyjt9v8rfnh2px7',
+        publicKey:    'vxk9d968nqydxc5c',
+        privateKey:   '062d8f03343c2b75c7b494697d080b89'
+    });
+
+    // render payment page
+    app.get('/payment', function (request, response) {
+
+      gateway.clientToken.generate({}, function (err, res) {
+        response.render('payment', {
+          clientToken: res.clientToken
+        });
+      });
+
+    });
+
+    //process payment via credit card or paypal
+    // if err, redirect to error page, else success html
+    app.post('/process', parseUrlEnconded, function (request, response) {
+
+      var transaction = request.body;
+
+      gateway.transaction.sale({
+        amount: transaction.amount,
+        paymentMethodNonce: transaction.payment_method_nonce
+      }, function (err, result) {
+
+        if (err) throw err;
+
+        if (result.success) {
+
+          console.log(result);
+
+          response.sendFile('success.html', {
+            root: './public'
+          });
+        } else {
+          response.sendFile('error.html', {
+            root: './public'
+          });
+        }
+      });
+
+    });
 
 
     // =====================================
