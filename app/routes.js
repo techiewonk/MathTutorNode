@@ -120,14 +120,19 @@ module.exports = function(app, passport) {
 
     app.get('/profile', isLoggedIn, function(req, res) {
         User.find({},function(err,usrs){
-            //console.log("\nUsers: ");
-            //console.log(usrs);
             renderResult(res,usrs,"User List",req.user,'profile')
         });
     });
 
-    function renderResult(res,usrs,msg,user,page){
-        res.render(page + '.ejs', {message: msg, people:usrs, user : user},
+
+    // wrote this as a multipurpose function to deliver an array of users
+    // to the page. the page will accept the array as 'people'. 
+    // userlist page - just delivers a full list
+    // search page - will deliver a list that fulfills the criteria
+    function renderResult(res,usrs=false,msg,user,page){
+        //page will change depending on what page is running this function
+        res.render(page + '.ejs', {message: msg, people:usrs, user : user}, 
+
             function (err,result){
                 if (!err){res.end(result);}
                 else {res.end('Oops!');
@@ -158,8 +163,13 @@ module.exports = function(app, passport) {
             console.log(req.body.firstname);
             console.log('profile update error');
         });
-        res.render('index.ejs', {
-            user : req.user
+        //res.render('index.ejs', {
+        //    user : req.user
+        //});
+        // changed this to go to the profile page instead of the index
+        // why did I make it go to the index?
+        User.find({},function(err,usrs){
+            renderResult(res,usrs,"User List",req.user,'profile')
         });
     });
 
@@ -177,6 +187,33 @@ module.exports = function(app, passport) {
             renderResult(res,usrs,"User List",req.user,'users')
         });
     });
+
+
+    // =====================================
+    // SEARCH TUTORS =======================
+    // =====================================
+
+    //needs to be written 
+    app.get('/search', isLoggedIn, function(req,res) {
+        renderResult(res,false,"Tutors",req.user,'search')
+    });
+
+    app.post('/search', isLoggedIn, function(req,res){
+        console.log(req.body.searchbox);
+
+        // currently just searches through first and last names. 
+        
+        User.find(
+            { $or: [
+                {"local.firstname": { $regex : req.body.searchbox, $options : 'i'}},
+                {"local.lastname": { $regex : req.body.searchbox, $options : 'i'}}]},
+            function(err,usrs){
+            console.log("\nTutors");
+            console.log(usrs);
+            renderResult(res,usrs,"Tutors",req.user,'search')
+        })
+        
+    })
 
 
     // =====================================

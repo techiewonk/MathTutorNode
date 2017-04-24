@@ -1,0 +1,57 @@
+<!-- views/search.ejs -->
+<%- include includes/header %>
+<div class="container">
+
+    <div class="page-header text-center">
+        <h1><span class="fa fa-anchor"></span>Search</h1>
+        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+    </div>
+
+    <div class="row">
+
+        <!-- LOCAL INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3><span class="fa fa-user"></span> Local Test</h3>
+
+                <!-- SEARCH FORM -->
+    			<form action="/search" method="post">
+    				<div class="form-group">
+		            <label>Search for Tutors</label>
+		            <input type="text" class="form-control" name="searchbox">
+        			</div>
+        			<button type="submit" class="btn btn-warning btn-lg">Search</button>
+    			</form>
+
+            </div>
+        </div>
+        
+        <!-- GLOBAL INFORMATION -->
+        <div class="col-sm-6">
+            <div class="well">
+                <h3><span class="fa fa-user"></span>Tutors</h3>
+
+                    <p>
+                        <% if( Array.isArray(people) ) { %>
+                        <ul>
+                        <%people.forEach( function( us ){ %>
+                        <strong>id</strong>: <%= us._id %><br>
+                        <strong>First Name</strong>: <%= us.local.firstname %><br>
+                        <strong>Last Name</strong>: <%= us.local.lastname %><br>
+                        <strong>email</strong>: <%= us.local.email %><br>
+                        <strong>Type</strong>: <%= us.local.job %><br>
+                        <hr>
+                        <% })} else { %>
+                        <b>
+                        No Results!
+                        </b>
+                        <% }; %>
+                    </p>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
