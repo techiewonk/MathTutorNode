@@ -1,0 +1,69 @@
+<%- include includes/header %>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+    <title>mathBoost Payment</title>
+    <link rel="stylesheet" href="bower_components/pure/pure-min.css"/>
+    <link rel="stylesheet" href="css/styles.css"/>
+  	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+
+    <div class="payment-card">
+
+      <img src="img/img_placeholder.png" alt="">
+
+        <h1>Tutor Name: <%- tutor %></h1>
+        <div>
+          Session length:
+          <select class="myselect pure-u-2-3 pure-form-stacked">
+            <option value="1">30min/$30.00</option>
+            <option value="2">1hr/$50.00</option>
+            <option value="3">2hr/$100.00</option>
+          </select>
+        </div>
+
+        <form class="pure-form pure-form-stacked " action="/process" method="post">
+            <fieldset>
+                <div class="pure-g">
+                    <label class="pure-u-1-3" for="amount">Session price:</label>
+                    <input class="pure-u-2-3" id="amount" class="pure-input-1" readonly="readonly" name="amount" type="text" value="30.00" required>
+                </div>
+
+                <br>
+
+                <div id="checkout"></div>
+
+                <button type="submit" class="pure-button pure-button-primary">Pay now</button>
+
+            </fieldset>
+        </form>
+    </div>
+
+    <script src="bower_components/braintree-web/dist/braintree.js"></script>
+
+    <script>
+        braintree.setup('<%- clientToken %>', 'dropin', {
+            container: 'checkout'
+        });
+
+    $(".myselect").change(function(){
+      var res = $(".myselect").find(":selected").map(function () {
+        if($(this).val()=="1")
+          return "30.00";
+        if($(this).val()=="2")
+          return "50.00";
+        if($(this).val()=="3")
+          return "100.00";
+       }).get().join(" ");
+
+       $("#amount").val(res);
+
+     });
+    </script>
+</body>
+
+</html>

@@ -17,7 +17,7 @@ module.exports = function(app, passport) {
     app.get('/login', function(req, res) {
 
         // render the page and pass in any flash data if it exists
-        res.render('login.ejs', { message: req.flash('loginMessage') }); 
+        res.render('login.ejs', { message: req.flash('loginMessage') });
     });
 
     // process the login form
@@ -44,16 +44,86 @@ module.exports = function(app, passport) {
         failureFlash : true // allow flash messages
     }));
     // =====================================
+    // PAYMENT SECTIONS =====================
+    // =====================================
+    // setup braintree
+    // process payment
+    // redirect to videos tutoring session
+
+    var bodyParser   = require('body-parser');
+    var parseUrlEnconded = bodyParser.urlencoded({
+      extended: false
+    });
+    // Braintree Sandbox env. use to connect to Braintree payments.
+    // will have to re-factor code in a env file for security (future task)
+    var braintree = require('braintree');
+    var gateway = braintree.connect({
+        environment:  braintree.Environment.Sandbox,
+        merchantId:   'pyyjt9v8rfnh2px7',
+        publicKey:    'vxk9d968nqydxc5c',
+        privateKey:   '062d8f03343c2b75c7b494697d080b89'
+    });
+
+    // render payment page
+    app.get('/payment', function (request, response) {
+      User.findOne({email: 'test123@test.com' },function(err,usrs){
+          //console.log("\nUsers: ");
+          console.log(usrs);
+
+      });
+
+      var tutor = {name: 'Prof X'};
+      gateway.clientToken.generate({}, function (err, res) {
+        response.render('payment', {
+          clientToken: res.clientToken,
+          tutor: tutor.name
+        });
+      });
+
+    });
+
+    //process payment via credit card or paypal
+    // if err, redirect to error page, else success html
+    app.post('/process', parseUrlEnconded, function (request, response) {
+
+      var transaction = request.body;
+
+      gateway.transaction.sale({
+        amount: transaction.amount,
+        paymentMethodNonce: transaction.payment_method_nonce
+      }, function (err, result) {
+
+        if (err) throw err;
+
+        if (result.success) {
+
+          console.log(result);
+
+          response.sendFile('success.html', {
+            root: './public'
+          });
+        } else {
+          response.sendFile('error.html', {
+            root: './public'
+          });
+        }
+      });
+
+    });
+
+
+    // =====================================
     // PROFILE SECTION =====================
     // =====================================
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    
+
     app.get('/profile', isLoggedIn, function(req, res) {
         User.find({},function(err,usrs){
             renderResult(res,usrs,"User List",req.user,'profile')
         });
     });
+
 
     // wrote this as a multipurpose function to deliver an array of users
     // to the page. the page will accept the array as 'people'. 
@@ -62,6 +132,7 @@ module.exports = function(app, passport) {
     function renderResult(res,usrs=false,msg,user,page){
         //page will change depending on what page is running this function
         res.render(page + '.ejs', {message: msg, people:usrs, user : user}, 
+
             function (err,result){
                 if (!err){res.end(result);}
                 else {res.end('Oops!');
@@ -73,7 +144,7 @@ module.exports = function(app, passport) {
     // =====================================
     // EDIT USER ===========================
     // =====================================
-    
+
     app.get('/update', isLoggedIn, function(req, res){
         res.render('update.ejs', {
             message: req.flash('updateMessage'),
@@ -108,7 +179,7 @@ module.exports = function(app, passport) {
     // copied from the profile code
     // we will want this protected so you have to be logged in to visit
     // we will use route middleware to verify this (the isLoggedIn function)
-    
+
     app.get('/users', isLoggedIn, function(req, res) {
         User.find({},function(err,usrs){
             //console.log("\nUsers: ");
@@ -116,6 +187,7 @@ module.exports = function(app, passport) {
             renderResult(res,usrs,"User List",req.user,'users')
         });
     });
+
 
     // =====================================
     // SEARCH TUTORS =======================
@@ -143,6 +215,7 @@ module.exports = function(app, passport) {
         
     })
 
+
     // =====================================
     // FORGOT PASS =========================
     // =====================================
@@ -167,7 +240,7 @@ module.exports = function(app, passport) {
 // route middleware to make sure a user is logged in
 function isLoggedIn(req, res, next) {
 
-    // if user is authenticated in the session, carry on 
+    // if user is authenticated in the session, carry on
     if (req.isAuthenticated())
         return next();
 

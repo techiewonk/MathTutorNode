@@ -1,6 +1,8 @@
 # Dependency directories
 node_modules/
 jspm_packages/
+npm-debug.log
 
-# once we get everyone on this repository working, 
+
+# once we get everyone on this repository working,
 # add on the database.js file to the gitignore

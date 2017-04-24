@@ -12,6 +12,15 @@ Going to continue with Refactoring Basic Authenticated:
 Woring on a free sandbox MongoDB from mlab:
 	- http://mlab.com
 
+
+Payment Transaction using Braintree
+	- Run `npm install` to install all dependencies
+	- Fill in the form using a Credit Card:
+	    - Number: `4111 1111 1111 1111`
+	    - CVV: `123`
+	    - Expiration date: `11/2020`
+
 Search function - used Reds module
 	- https://github.com/tj/reds (documentation)
 	- https://medium.com/@stockholmux/reds-internals-searching-and-better-searching-with-node-js-and-redis-57da99077e83 (guide for using)
+
