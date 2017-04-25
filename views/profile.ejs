@@ -20,6 +20,11 @@
                         <strong>email</strong>: <%= user.local.email %><br>
                         <strong>password</strong>: <%= user.local.password %>
                         <strong>Type</strong>: <%= user.local.job %><br>
+                        <% if(user.local.job === "Tutor") {%>
+                        <strong>Classes Offered:</strong> <br>
+                                <% for (var i=0;i<user.local.classes.length;i++) { %>
+                               <%= user.local.classes[i] %><br>
+                                <% }} %>
                         <a href="/update">Edit Account</a>
                         
                     </p>

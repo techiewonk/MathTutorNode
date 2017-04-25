@@ -40,6 +40,10 @@
                         <strong>Last Name</strong>: <%= us.local.lastname %><br>
                         <strong>email</strong>: <%= us.local.email %><br>
                         <strong>Type</strong>: <%= us.local.job %><br>
+                        <strong>Classes Offered:</strong> <br>
+                                <% for (var i=0;i<us.local.classes.length;i++) { %>
+                               <%= us.local.classes[i] %><br>
+                                <% } %>
                         <hr>
                         <% })} else { %>
                         <b>
