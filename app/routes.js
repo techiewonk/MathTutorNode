@@ -66,17 +66,20 @@ module.exports = function(app, passport) {
 
     // render payment page
     app.get('/payment', function (request, response) {
-      User.findOne({email: 'test123@test.com' },function(err,usrs){
-          //console.log("\nUsers: ");
-          console.log(usrs);
+      var tutor;
+      User.findOne({"local.job" : "Tutor"},function(err,usrs){
 
+        console.log(usrs);
+        tutor = {firstName: usrs.local.firstname,
+                    lastName: usrs.local.lastname
+                    };
       });
 
-      var tutor = {name: 'Prof X'};
+
       gateway.clientToken.generate({}, function (err, res) {
         response.render('payment', {
           clientToken: res.clientToken,
-          tutor: tutor.name
+          tutor: tutor
         });
       });
 
