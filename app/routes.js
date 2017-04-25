@@ -43,6 +43,7 @@ module.exports = function(app, passport) {
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
+    
     // =====================================
     // PAYMENT SECTIONS =====================
     // =====================================
@@ -66,21 +67,12 @@ module.exports = function(app, passport) {
 
     // render payment page
     app.get('/payment', function (request, response) {
-      var tutor;
-      // User.findOne({"local.job" : "Tutor"},function(err,usrs){
-      //
-      // //   console.log(usrs);
-      // //   // tutor = {firstName: usrs.local.firstname,
-      // //   //             lastName: usrs.local.lastname
-      // //   //             };
-      // // });
-
-        tutor = {
+      var tutor = {
           firstName: request.query.fname,
           lastName: request.query.lname
         }
 
-console.log("passporttttttt", User.local);
+
       gateway.clientToken.generate({}, function (err, res) {
         response.render('payment', {
           clientToken: res.clientToken,
@@ -95,14 +87,15 @@ console.log("passporttttttt", User.local);
     app.post('/process', parseUrlEnconded, function (request, response) {
 
       var transaction = request.body;
-
+      var customerInfo;
       gateway.transaction.sale({
         amount: transaction.amount,
         paymentMethodNonce: transaction.payment_method_nonce,
-        // customer: {
-        //   firstName: passport.local.firstname,
-        //   lastName: passport.local.lastname
-        // }
+        customer: {
+          firstName: request.user.local.firstname,
+          lastName: request.user.local.lastname,
+          email: request.user.local.email
+        }
       }, function (err, result) {
 
         if (err) throw err;
@@ -112,7 +105,7 @@ console.log("passporttttttt", User.local);
           console.log(result);
 
           response.sendFile('success.html', {
-            root: './public'
+            root: './public',
           });
         } else {
           response.sendFile('error.html', {
