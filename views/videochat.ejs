@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<% include header %>
+
+<br>
+<br>
+<br>
+<br>
+
+<script src="//static.opentok.com/webrtc/v2.2/js/opentok.min.js"></script>
+
+
+  <div class="container bump-me">
+
+   
+	<div class="body-content">
+		
+	
+	<div class="row">
+		<!-- PUBLISHER -->
+		<div class="col-lg-6">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Publisher</h3>
+				</div>
+			<div class="panel-body" >
+				<div id="publisher"></div>
+			</div>
+		</div>
+		</div>
+		
+		<!-- SUBSCRIBER -->
+		<div class="col-lg-6 col-offset-0">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title">Subscriber</h3>
+				</div>
+			<div class="panel-body">
+				<div id="subscribers"></div>
+			</div>
+		</div>
+	</div>
+
+
+	
+
+    <script>
+        var sessionId = "<%= sessionId %>";
+        var apiKey = "<%= apiKey %>";
+        var token = "<%= token %>";
+    </script>
+    <script src="/js/videochat.js"></script>
+
+  </div>
+
+</html>

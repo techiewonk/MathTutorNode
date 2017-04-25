@@ -35,7 +35,17 @@
     "passport-facebook": "~1.0.2",
     "passport-local": "~0.1.6",
     "reds": "1.0.0",
-    "braintree": "^1.23.0"
+    "braintree": "^1.23.0",
+	
+	"body-parser": "^1.0.0",
+    "ejs": "^0.8.5",
+    "express": "^4.0.0",
+    "jsonwebtoken": "^7.3.0",
+    "lodash": "^4.17.4",
+    "opentok-token": "^1.1.0",
+    "request": "^2.81.0"
+	
+	
 
   }
 }
