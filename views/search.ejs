@@ -41,8 +41,15 @@
                         <strong>Last Name</strong>: <input type="text" style="background: transparent; border: 0;" name="lname" readonly="readonly" value=<%= us.local.lastname %>><br>
                         <strong>email</strong>: <%= us.local.email %><br>
                         <strong>Type</strong>: <%= us.local.job %><br>
+
                           <button type="submit" class="btn btn-warning btn-sm">Select Tutor </button>
                         </form>
+
+                        <strong>Classes Offered:</strong> <br>
+                                <% for (var i=0;i<us.local.classes.length;i++) { %>
+                               <%= us.local.classes[i] %><br>
+                                <% } %>
+
                         <hr>
                         <% })} else { %>
                         <b>

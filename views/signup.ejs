@@ -5,6 +5,22 @@
     <title>Node Authentication</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
+
+    <link rel="stylesheet" type="text/css" media="screen" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/css/bootstrap-select.min.css">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script> 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.9.3/js/bootstrap-select.min.js"></script>
+   
+    <script>
+function tutorCheck() {
+    if (document.getElementById('tutor').checked) {
+        document.getElementById('hidden_div').style.display = 'block';
+    }
+    else document.getElementById('hidden_div').style.display = 'none';
+
+}
+    </script>
+
     <style>
         body        { padding-top:80px; }
     </style>
@@ -47,16 +63,29 @@
     <legend>Account Type</legend>
     <div class="form-check">
       <label class="form-check-label">
-        <input type="radio" class="form-check-input" name="jobRadio" value="Student" checked>
+        <input type="radio" class="form-check-input" name="jobRadio" onclick="javascript:tutorCheck();" id="student" value="Student" checked>
         Student
       </label>
     </div>
     <div class="form-check">
     <label class="form-check-label">
-        <input type="radio" class="form-check-input" name="jobRadio" value="Tutor">
+        <input type="radio" class="form-check-input" name="jobRadio" onclick="javascript:tutorCheck();" id="tutor" value="Tutor">
         Tutor
       </label>
     </div>
+        <div class="form-group" id="hidden_div" style="display:none">
+        Select Classes<br>
+            <select name="classes" class="selectpicker" multiple>
+                <optgroup label="Math">
+                  <option value="Algebra">Algebra</option>
+                  <option value="Trigonometry">Trigonometry</option>
+                  <option value="Calculus">Calculus</option>
+                </optgroup>
+                <optgroup label="Humanities">
+                  <option value="History">History</option>
+                </optgroup>
+            </select>
+        </div>
   </fieldset>
 
         <button type="submit" class="btn btn-warning btn-lg">Signup</button>
@@ -70,5 +99,6 @@
 </div>
 
 </div>
+
 </body>
 </html>

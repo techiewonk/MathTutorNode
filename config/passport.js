@@ -55,6 +55,7 @@ module.exports = function(passport) {
             // check to see if theres already a user with that email
             if (user) {
                 return done(null, false, req.flash('signupMessage', 'That email is already taken.'));
+
             } else {
 
                 // if there is no user with that email
@@ -67,6 +68,11 @@ module.exports = function(passport) {
                 newUser.local.firstname = req.body.firstname;
                 newUser.local.lastname = req.body.lastname;
                 newUser.local.job = req.body.jobRadio;
+                if(req.body.jobRadio === "Tutor"){
+                    for(var i=0;i<req.body.classes.length;i++){
+                        newUser.local.classes.push(req.body.classes[i]);
+                    }
+                }
 
                 // save the user
                 newUser.save(function(err) {
