@@ -20,7 +20,3 @@ Payment Transaction using Braintree
 	    - CVV: `123`
 	    - Expiration date: `11/2020`
 
-Search function - used Reds module
-	- https://github.com/tj/reds (documentation)
-	- https://medium.com/@stockholmux/reds-internals-searching-and-better-searching-with-node-js-and-redis-57da99077e83 (guide for using)
-

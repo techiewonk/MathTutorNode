@@ -34,7 +34,7 @@
     "passport": "~0.1.17",
     "passport-facebook": "~1.0.2",
     "passport-local": "~0.1.6",
-    "reds": "1.0.0"
+    "reds": "1.0.0",
     "braintree": "^1.23.0"
 
   }
