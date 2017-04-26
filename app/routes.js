@@ -47,7 +47,7 @@ module.exports = function(app, passport) {
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
-    
+
     // =====================================
     // PAYMENT SECTIONS =====================
     // =====================================
@@ -91,7 +91,7 @@ module.exports = function(app, passport) {
     app.post('/process', parseUrlEnconded, function (request, response) {
 
       var transaction = request.body;
-      var customerInfo;
+      //console.log('test transact', transaction);
       gateway.transaction.sale({
         amount: transaction.amount,
         paymentMethodNonce: transaction.payment_method_nonce,
@@ -106,10 +106,15 @@ module.exports = function(app, passport) {
 
         if (result.success) {
 
-          console.log(result);
+ 
 
-          response.sendFile('success.html', {
-            root: './public',
+          response.render('success', {
+            customerInfo: {
+              id: result.transaction.id,
+              firstName: request.user.local.firstname,
+              lastName: request.user.local.lastname,
+              amt: transaction.amount
+            }
           });
         } else {
           response.sendFile('error.html', {
