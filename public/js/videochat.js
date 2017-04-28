@@ -1,5 +1,4 @@
 
-
 var session = OT.initSession(sessionId);
 var options = {
 	insertMode: 'append',
