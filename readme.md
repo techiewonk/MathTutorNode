@@ -20,3 +20,6 @@ Payment Transaction using Braintree
 	    - CVV: `123`
 	    - Expiration date: `11/2020`
 
+Link to Heroku for videochat functionality (archve list, videchat):
+
+https://mathboostvideochat.herokuapp.com/tutors
