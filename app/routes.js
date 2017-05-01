@@ -250,88 +250,15 @@ module.exports = function(app, passport) {
     // VIDEOCHAT SECTION =======================
     // =====================================
 
-/*
-// Opentok API Key and Secret
-var apiKey = "45827022";
-var apiSecret = "a3e34c57968fb9b6e83119489e05c11145e3ce61";
-
-// Initialize OpenTok
-var opentok = new OpenTok(apiKey, apiSecret);
-//Variable keeps track of the session ID for the URL
-var sessID = videosession.getSessionID();
-
-// Create a session and store it in the express app
-opentok.createSession({ mediaMode: 'routed', archiveMode: 'always' },function(err, session) {
-  if (err) throw err;
-  app.set('sessionId', session.sessionId);
-
-  //initializes sessID to be appended to URL
-  sessID = session.sessionId;
-    
-});
-
-	app.get('/videoAdmin', function (req, res){
-		res.render('videoAdmin.ejs');
-	});
-
-	app.get('/tutors', function(req, res) {
-		res.render('tutors.ejs', {
-		sessID : sessID
-		});
-	});
-
-	app.get('/videochat/:sessID', function(req, res) {
-		var sessionId = app.get('sessionId'),
-	  
-		// generate a fresh token for this client
-		token = opentok.generateToken(sessionId, { role: 'moderator' });
-	
-	res.render('videochat.ejs', {
-		apiKey: apiKey,
-		sessionId: sessionId,
-		token: token
-	});
-	});
-
-	app.get('/history', function(req, res) {
-		var page = req.param('page') || 1,
-		offset = (page - 1) * 5;
-		opentok.listArchives({ offset: offset, count: 5 }, function(err, archives, count) {
-			if (err) return res.send(500, 'Could not list archives. error=' + err.message);
-			res.render('history.ejs', {
-			archives: archives,
-			showPrevious: page > 1 ? ('/history?page='+(page-1)) : null,
-			showNext: (count > offset + 5) ? ('/history?page='+(page+1)) : null
-		});
-	});
-	});
-
-	app.get('/download/:archiveId', function(req, res) {
-	var archiveId = req.param('archiveId');
-	opentok.getArchive(archiveId, function(err, archive) {
-		if (err) return res.send(500, 'Could not get archive '+archiveId+'. error='+err.message);
-		res.redirect(archive.url);
-	});
-	});
-	
-	app.get('/delete/:archiveId', function(req, res) {
-	var archiveId = req.param('archiveId');
-	opentok.deleteArchive(archiveId, function(err) {
-		if (err) return res.send(500, 'Could not stop archive '+archiveId+'. error='+err.message);
-		res.redirect('/history');
-	});
-	});
-
-	*/
 	
 
-// Initialize OpenTok
-var opentok = videosession.getOpentok();
+	// Initialize OpenTok
+	var opentok = videosession.getOpentok();
 
-//create Videochat Session
-videosession.createVideoSession();
-//Variable keeps track of the session ID for the URL
-var sessID;
+	//create Videochat Session
+	videosession.createVideoSession();
+	//Variable keeps track of the session ID for the URL
+	var sessID;
 
 	app.get('/videoAdmin', function (req, res){
 		res.render('videoAdmin.ejs');
