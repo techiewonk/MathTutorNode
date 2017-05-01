@@ -1,0 +1,46 @@
+<%- include includes/header %>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Success</title>
+    <link rel="stylesheet" href="bower_components/pure/pure-min.css" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
+
+<body>
+
+    <div class="well col-md-4" style="margin-left: 175px">
+
+        <img src="img/img_placeholder.png" alt="">
+
+        <h1 class="success">Payment received!</h1>
+      </div>
+      <div class="well col-md-4">
+        <form class="payment-card">
+            <label for="ID" class="heading">Transaction ID</label><br>
+            <input type="text" disabled="disabled" name="ID" id="ID" value=<%- customerInfo.id %>><br><br>
+
+            <label for="firstName" class="heading">First Name</label><br>
+            <input type="text" disabled="disabled" name="firstName" value=<%- customerInfo.firstName %>><br><br>
+
+            <label for="lastName" class="heading">Last Name</label><br>
+            <input type="text" disabled="disabled" name="lastName"  value=<%- customerInfo.lastName %>><br><br>
+
+            <label for="amount" class="heading">Amount (USD)</label><br>
+            <input type="text" disabled="disabled" name="amount"  value=<%- customerInfo.amt %>><br><br>
+
+            <label for="status" class="heading">Status</label><br>
+            <input type="text" disabled="disabled" name="status"  value="Successful"><br><br>
+
+            <br><br>
+
+            <button type="button"><a href="/profile"> START SESSION</a></button>
+      </form>
+    </div>
+
+</body>
+
+</html>

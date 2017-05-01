@@ -49,8 +49,8 @@ module.exports = function(passport) {
         // we are checking to see if the user trying to login already exists
         User.findOne({ 'local.email' :  email }, function(err, user) {
             // if there are any errors, return the error
-            if (err)
-                return done(err);
+            if (err){
+                return done(err);}
 
             // check to see if theres already a user with that email
             if (user) {
@@ -69,8 +69,12 @@ module.exports = function(passport) {
                 newUser.local.lastname = req.body.lastname;
                 newUser.local.job = req.body.jobRadio;
                 if(req.body.jobRadio === "Tutor"){
-                    for(var i=0;i<req.body.classes.length;i++){
-                        newUser.local.classes.push(req.body.classes[i]);
+                    if(Array.isArray(req.body.classes)){
+                        for(var i=0;i<req.body.classes.length;i++){
+                            newUser.local.classes.push(req.body.classes[i]);
+                        }}
+                    else {
+                        newUser.local.classes.push(req.body.classes);
                     }
                 }
 

@@ -51,6 +51,7 @@ module.exports = function(app, passport) {
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
+
     // =====================================
     // PAYMENT SECTIONS =====================
     // =====================================
@@ -74,17 +75,16 @@ module.exports = function(app, passport) {
 
     // render payment page
     app.get('/payment', function (request, response) {
-      User.findOne({email: 'test123@test.com' },function(err,usrs){
-          //console.log("\nUsers: ");
-          console.log(usrs);
+      var tutor = {
+          firstName: request.query.fname,
+          lastName: request.query.lname
+        }
 
-      });
 
-      var tutor = {name: 'Prof X'};
       gateway.clientToken.generate({}, function (err, res) {
         response.render('payment', {
           clientToken: res.clientToken,
-          tutor: tutor.name
+          tutor: tutor
         });
       });
 
@@ -95,20 +95,30 @@ module.exports = function(app, passport) {
     app.post('/process', parseUrlEnconded, function (request, response) {
 
       var transaction = request.body;
-
+      //console.log('test transact', transaction);
       gateway.transaction.sale({
         amount: transaction.amount,
-        paymentMethodNonce: transaction.payment_method_nonce
+        paymentMethodNonce: transaction.payment_method_nonce,
+        customer: {
+          firstName: request.user.local.firstname,
+          lastName: request.user.local.lastname,
+          email: request.user.local.email
+        }
       }, function (err, result) {
 
         if (err) throw err;
 
         if (result.success) {
 
-          console.log(result);
+ 
 
-          response.sendFile('success.html', {
-            root: './public'
+          response.render('success', {
+            customerInfo: {
+              id: result.transaction.id,
+              firstName: request.user.local.firstname,
+              lastName: request.user.local.lastname,
+              amt: transaction.amount
+            }
           });
         } else {
           response.sendFile('error.html', {
@@ -127,6 +137,7 @@ module.exports = function(app, passport) {
     // we will use route middleware to verify this (the isLoggedIn function)
 
     app.get('/profile', isLoggedIn, function(req, res) {
+
         User.find({},function(err,usrs){
             renderResult(res,usrs,"User List",req.user,'profile')
         });
@@ -134,12 +145,12 @@ module.exports = function(app, passport) {
 
 
     // wrote this as a multipurpose function to deliver an array of users
-    // to the page. the page will accept the array as 'people'. 
+    // to the page. the page will accept the array as 'people'.
     // userlist page - just delivers a full list
     // search page - will deliver a list that fulfills the criteria
     function renderResult(res,usrs=false,msg,user,page){
         //page will change depending on what page is running this function
-        res.render(page + '.ejs', {message: msg, people:usrs, user : user}, 
+        res.render(page + '.ejs', {message: msg, people:usrs, user : user},
 
             function (err,result){
                 if (!err){res.end(result);}
@@ -201,7 +212,7 @@ module.exports = function(app, passport) {
     // SEARCH TUTORS =======================
     // =====================================
 
-    //needs to be written 
+    //needs to be written
     app.get('/search', isLoggedIn, function(req,res) {
         renderResult(res,false,"Tutors",req.user,'search')
     });
@@ -209,8 +220,8 @@ module.exports = function(app, passport) {
     app.post('/search', isLoggedIn, function(req,res){
         console.log(req.body.searchbox);
 
-        // currently just searches through first and last names. 
-        
+        // currently just searches through first and last names.
+
         User.find(
             { $and: [       
                 {"local.job" : "Tutor"},
@@ -222,8 +233,10 @@ module.exports = function(app, passport) {
             console.log(usrs);
             renderResult(res,usrs,"Tutors",req.user,'search')
         })
-        
-    })
+
+    });
+
+
 
 
     // =====================================
