@@ -1,47 +1,100 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Node Authentication</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <style>
-        body        { padding-top:80px; word-wrap:break-word; }
-    </style>
-</head>
-<body>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <title>Mathboost</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
 
-<nav class="navbar navbar-light navbar-default navbar-fixed-top">
-  <div class="container-fluid">
-    <!-- Brand and toggle get grouped for better mobile display -->
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#">MathNode</a>
-    </div>
 
-    <!-- Collect the nav links, forms, and other content for toggling -->
-    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      <ul class="nav navbar-nav">
-        <li><a href="/">Home</a></li>
-        <li><a href="/profile">Profile</a></li>
-        <li><a href="/users">Users</a></li>
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0/css/bootstrap-theme.min.css">
+  <link rel="stylesheet" href="css/videopage.css">
 
-        <li><a href="/payment">Payment</a></li>
-		<li><a href="/videoAdmin">Video Admin </a></li>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+
+<!-- HEAD SECTION -->
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+		<!--[if IE]>
+			<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+			<![endif]-->
 		
+		<title>MathBoost</title>
+		
+		<!--JAVASCRIPT-->
+		<script src="http://www.google.com/jsapi" type="text/javascript"></script>
 
-        <li><a href="/search">Search</a></li>
+		<!--JQUERY-->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="/logout">Log Out</a></li>
-      </ul>
-    </div><!-- /.navbar-collapse -->
-  </div><!-- /.container-fluid -->
-</nav>
+  		<!--TWITTER BOOTSTRAP-->
+  		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  		
+		<!--GOOGLE FONT -->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
+		
+		<!--FONTAWESOME MAIN STYLE -->
+		<link href="css/font-awesome.min.css" rel="stylesheet" /> 
 
+		<!--CUSTOM STYLE -->
+		<link href="css/style.css" rel="stylesheet" /> 
+		
+		
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		  <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+		<![endif]-->
+	</head>
+	<!--END HEAD SECTION -->
+	
+	
+  	<body>
+		<!-- NAV SECTION -->
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="container">
+				<div class="navbar-header">
+					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="navbar-brand" href="/">MathBoost</a>
+				</div>
+				<div class="navbar-collapse collapse">
+					<ul class="nav navbar-nav navbar-right">
+						<li><a href="/">HOME</a></li>
+						<li><a href="/search">FIND A TUTOR</a></li>
+						<li><a href="/">CONTACT</a></li>
+						<li><a href="/users">USERS</a></li>
+						<li><a href="/payment">PAYMENT</a></li>
+						<li><a href="/videoAdmin">VIDEO ADMIN</a></li>
+						
+							<li>
+								<a href = "#" data-toggle="dropdown" class="dropdown-toggle"><span class="glyphicon glyphicon-user" aria-hidden="true"><b class = "caret"></b></a>
+								<ul class="dropdown-menu" aria-labelledby="userDropdown">
+						    		<li class = "dropdown-header">  
+						    			<?php echo $_SESSION['username'];?>
+						    		</li>
+						    		<li><a href="/profile">PROFILE</a></li>
+						    		<li role="separator" class="divider"></li>
+						    		<li><a href="/logout">SIGN OUT</a></li>
+								</ul>
+							</li>
+						<?php endif; ?>
+					</ul>
+				</div>
+			</div>
+		</div>
+		 <!--END NAV SECTION -->
+		<br>
+		<br>
+		<br>
+		<br>
+</body>
 
