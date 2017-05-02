@@ -119,7 +119,9 @@ module.exports = function(app, passport) {
 		
 		//Variable keeps track of the session ID for the URL
 		var sessID = videosession.getSessionID();
-		var chatURL = ('http://localhost:8081/videochat/' + sessID);
+		
+		var chatURL = ('https://mathboost.herokuapp.com/videochat/' + sessID);
+		//var chatURL = ('http://localhost:8081/videochat/' + sessID);
 		 
 		//call sendEmail function from emailtutor.js to send email to tutor
 		  email.sendEmail(chatURL);
