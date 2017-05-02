@@ -33,7 +33,7 @@ hr {
   color: #b2435b;
 }
 
-
+select:invalid { color: gray; }
 
 .myselect {
   margin-left: 30px;
