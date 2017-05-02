@@ -33,7 +33,7 @@ exports.createVideoSession  = function(){
 	console.log("==================" + session.sessionId + "===============");
     
 });
-	
+	return sessID;
 };
 
 

@@ -1,5 +1,9 @@
+<!DOCTYPE html>
+
 <%- include includes/header %>
-<html lang="en">
+
+
+<script src="//static.opentok.com/webrtc/v2.2/js/opentok.min.js"></script>
 
 <head>
     <meta charset="UTF-8">
@@ -37,10 +41,18 @@
 
             <br><br>
 
-            <button type="button"><a href="/profile"> START SESSION</a></button>
+            <button type="button"><a href = "videochat/<%= sessID %>"> START SESSION</a></button>
       </form>
+	  
+	  	<script>
+        var sessID = "<%= sessID %>";
+		</script>   
+	
     </div>
 
+
+
+	
 </body>
 
 </html>
