@@ -43,8 +43,8 @@
     "jsonwebtoken": "^7.3.0",
     "lodash": "^4.17.4",
     "opentok-token": "^1.1.0",
-    "request": "^2.81.0"
-	
+    "request": "^2.81.0",
+	"opentok": "^2.5.0"
 	
 
   }

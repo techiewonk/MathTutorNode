@@ -220,19 +220,36 @@ module.exports = function(app, passport) {
     app.post('/search', isLoggedIn, function(req,res){
         console.log(req.body.searchbox);
 
-        // currently just searches through first and last names.
+        // searches names & classes
 
-        User.find(
-            { $and: [       
-                {"local.job" : "Tutor"},
-                { $or: [{"local.firstname": { $regex : req.body.searchbox, $options : 'i'}},{"local.lastname": { $regex : req.body.searchbox, $options : 'i'}},{"local.classes": { $regex : req.body.searchbox, $options : 'i'}}]}
-                ]
-            },
-            function(err,usrs){
-            console.log("\nTutors");
-            console.log(usrs);
-            renderResult(res,usrs,"Tutors",req.user,'search')
-        })
+        if(req.body.searchbox != "" && req.body.selectsearch === ""){
+            console.log("text entered");
+            User.find(
+                { $and: [       
+                    {"local.job" : "Tutor"},
+                    { $or: [{"local.firstname": { $regex : req.body.searchbox, $options : 'i'}},{"local.lastname": { $regex : req.body.searchbox, $options : 'i'}},{"local.classes": { $regex : req.body.searchbox, $options : 'i'}}]}
+                    ]
+                },
+                function(err,usrs){
+                console.log("\nTutors");
+                console.log(usrs);
+                renderResult(res,usrs,"Tutors",req.user,'search')
+            })
+        }
+        else if (req.body.selectsearch != "" && req.body.searchbox === "") {
+            console.log("select search " + req.body.selectsearch);
+            User.find(
+                { $and: [       
+                    {"local.job" : "Tutor"},
+                    {"local.classes": { $regex : req.body.selectsearch, $options : 'i'}}
+                    ]
+                },
+                function(err,usrs){
+                console.log("\nTutors");
+                console.log(usrs);
+                renderResult(res,usrs,"Tutors",req.user,'search')
+            })
+        }
 
     });
 
