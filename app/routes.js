@@ -10,10 +10,17 @@ var OpenTok = require('opentok');
 module.exports = function(app, passport) {
 
     // =====================================
-    // HOME PAGE (with login links) ========
+    // INDEX PAGE (with login links) ========
     // =====================================
     app.get('/', function(req, res) {
         res.render('index.ejs'); // load the index.ejs file
+    });
+
+    // =====================================
+    // HOME PAGE ===========================
+    // =====================================
+    app.get('/home', isLoggedIn, function(req, res) {
+        res.render('home.ejs');
     });
 
     // =====================================
@@ -28,7 +35,7 @@ module.exports = function(app, passport) {
 
     // process the login form
     app.post('/login', passport.authenticate('local-login', {
-        successRedirect : '/profile', // redirect to the secure profile section
+        successRedirect : '/home', // redirect to the secure profile section
         failureRedirect : '/login', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
@@ -49,11 +56,11 @@ module.exports = function(app, passport) {
         // form validation
 
 
-        successRedirect : '/profile', // redirect to the secure profile section
+        successRedirect : '/home', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
-	
+
 
 
     // =====================================
@@ -78,7 +85,7 @@ module.exports = function(app, passport) {
     });
 
     // render payment page
-    app.get('/payment', function (request, response) {
+    app.get('/payment', isLoggedIn, function (request, response) {
       var tutor = {
           firstName: request.query.fname,
           lastName: request.query.lname
@@ -116,16 +123,16 @@ module.exports = function(app, passport) {
 
 		//creates NEW videochat Session by calling createVideoSession function from videosession.js
 		videosession.createVideoSession();
-		
+
 		//Variable keeps track of the session ID for the URL
 		var sessID = videosession.getSessionID();
-		
+
 		var chatURL = ('https://mathboost.herokuapp.com/videochat/' + sessID);
 		//var chatURL = ('http://localhost:8081/videochat/' + sessID);
-		 
+
 		//call sendEmail function from emailtutor.js to send email to tutor
 		  email.sendEmail(chatURL);
-		  
+
           response.render('success', {
 			//sessID is passed in order to launch video chat
 			sessID : sessID,
@@ -146,38 +153,38 @@ module.exports = function(app, passport) {
 
     });
 
-	
+
 	// =====================================
     // VIDEOCHAT SECTION =======================
     // =====================================
-	
-	
+
+
 	//Create First Video Session
 	videosession.createVideoSession();
-	
+
 	// Initialize OpenTok
 	var opentok = videosession.getOpentok();
-	
-	
+
+
 	app.get('/videoAdmin', function (req, res){
 		res.render('videoAdmin.ejs');
 	});
 
 	app.get('/tutors', function(req, res) {
 		var sessID = videosession.getSessionID();
-				
+
 		res.render('tutors.ejs', {
 		sessID : sessID
 		});
 	});
-	
-	
+
+
 	app.get('/videochat/:sessID', function(req, res) {
-		
-		
+
+
 		// generate a fresh token for this client
 		token = videosession.createToken();
-	
+
 	res.render('videochat.ejs', {
 		apiKey: videosession.getAPIKey(),
 		sessionId: videosession.getSessionID(),
@@ -205,7 +212,7 @@ module.exports = function(app, passport) {
 		res.redirect(archive.url);
 	});
 	});
-	
+
 	app.get('/delete/:archiveId', function(req, res) {
 	var archiveId = req.param('archiveId');
 	opentok.deleteArchive(archiveId, function(err) {
@@ -213,8 +220,8 @@ module.exports = function(app, passport) {
 		res.redirect('/history');
 	});
 	});
-	
-	
+
+
 
     // =====================================
     // PROFILE SECTION =====================
@@ -311,7 +318,7 @@ module.exports = function(app, passport) {
         if(req.body.searchbox != "" && req.body.selectsearch === ""){
             console.log("text entered");
             User.find(
-                { $and: [       
+                { $and: [
                     {"local.job" : "Tutor"},
                     { $or: [{"local.firstname": { $regex : req.body.searchbox, $options : 'i'}},{"local.lastname": { $regex : req.body.searchbox, $options : 'i'}},{"local.classes": { $regex : req.body.searchbox, $options : 'i'}}]}
                     ]
@@ -325,7 +332,7 @@ module.exports = function(app, passport) {
         else if (req.body.selectsearch != "" && req.body.searchbox === "") {
             console.log("select search " + req.body.selectsearch);
             User.find(
-                { $and: [       
+                { $and: [
                     {"local.job" : "Tutor"},
                     {"local.classes": { $regex : req.body.selectsearch, $options : 'i'}}
                     ]
@@ -361,9 +368,9 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
-	
 
-	
+
+
 };
 
 // route middleware to make sure a user is logged in
@@ -376,9 +383,3 @@ function isLoggedIn(req, res, next) {
     // if they aren't redirect them to the home page
     res.redirect('/');
 };
-
-
-	
-	
-	
-	
