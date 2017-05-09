@@ -91,6 +91,8 @@
 
 </div>
     <script>
+        // client side validation
+        
         function tutorCheck() {
             if (document.getElementById('tutor').checked) {
                 document.getElementById('hidden_div').style.display = 'block';
@@ -106,15 +108,27 @@
 
         function check2Match(){
             if (pass1.value === pass2.value){
-                document.getElementById("warn1").textContent = "Passwords match!"
+                document.getElementById("warn1").textContent = "Passwords match!";
+                document.getElementById("warn2").textContent = "";
                 bool1 = true;
             }
             else
-                document.getElementById("warn2").textContent = "Passwords do not match!"
+                document.getElementById("warn2").textContent = "Passwords do not match!";
+                document.getElementById("warn1").textContent = "";
                 bool1 = false;
             console.log("Event firing.")
         }
 
+        function checkEmail(){
+            // this function will check that the user's email
+            // is valid & sets bool2 to true or false 
+        }
+
+        function onSubmit(){
+            // will check whether both bools are active
+            // and if so "reactivate" the submit button
+            // else remains disabled.
+        }
 
         pass2.addEventListener("change", check2Match, false);
         //email.addEventListener("change", checkEmail, false);
