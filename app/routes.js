@@ -1,5 +1,11 @@
 //routes.js
 var User            = require('../app/models/user');
+var videosession    = require('../app/models/videosession');
+var email			= require('../app/models/emailtutor');
+
+var request = require('request');
+var OpenTok = require('opentok');
+
 
 module.exports = function(app, passport) {
 
@@ -47,6 +53,8 @@ module.exports = function(app, passport) {
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
+	
+
 
     // =====================================
     // PAYMENT SECTIONS =====================
@@ -106,9 +114,21 @@ module.exports = function(app, passport) {
 
         if (result.success) {
 
- 
-
+		//creates NEW videochat Session by calling createVideoSession function from videosession.js
+		videosession.createVideoSession();
+		
+		//Variable keeps track of the session ID for the URL
+		var sessID = videosession.getSessionID();
+		
+		var chatURL = ('https://mathboost.herokuapp.com/videochat/' + sessID);
+		//var chatURL = ('http://localhost:8081/videochat/' + sessID);
+		 
+		//call sendEmail function from emailtutor.js to send email to tutor
+		  email.sendEmail(chatURL);
+		  
           response.render('success', {
+			//sessID is passed in order to launch video chat
+			sessID : sessID,
             customerInfo: {
               id: result.transaction.id,
               firstName: request.user.local.firstname,
@@ -116,6 +136,7 @@ module.exports = function(app, passport) {
               amt: transaction.amount
             }
           });
+
         } else {
           response.sendFile('error.html', {
             root: './public'
@@ -125,6 +146,75 @@ module.exports = function(app, passport) {
 
     });
 
+	
+	// =====================================
+    // VIDEOCHAT SECTION =======================
+    // =====================================
+	
+	
+	//Create First Video Session
+	videosession.createVideoSession();
+	
+	// Initialize OpenTok
+	var opentok = videosession.getOpentok();
+	
+	
+	app.get('/videoAdmin', function (req, res){
+		res.render('videoAdmin.ejs');
+	});
+
+	app.get('/tutors', function(req, res) {
+		var sessID = videosession.getSessionID();
+				
+		res.render('tutors.ejs', {
+		sessID : sessID
+		});
+	});
+	
+	
+	app.get('/videochat/:sessID', function(req, res) {
+		
+		
+		// generate a fresh token for this client
+		token = videosession.createToken();
+	
+	res.render('videochat.ejs', {
+		apiKey: videosession.getAPIKey(),
+		sessionId: videosession.getSessionID(),
+		token: token
+	});
+	});
+
+	app.get('/history', function(req, res) {
+		var page = req.param('page') || 1,
+		offset = (page - 1) * 5;
+		opentok.listArchives({ offset: offset, count: 5 }, function(err, archives, count) {
+			if (err) return res.send(500, 'Could not list archives. error=' + err.message);
+			res.render('history.ejs', {
+			archives: archives,
+			showPrevious: page > 1 ? ('/history?page='+(page-1)) : null,
+			showNext: (count > offset + 5) ? ('/history?page='+(page+1)) : null
+		});
+	});
+	});
+
+	app.get('/download/:archiveId', function(req, res) {
+	var archiveId = req.param('archiveId');
+	opentok.getArchive(archiveId, function(err, archive) {
+		if (err) return res.send(500, 'Could not get archive '+archiveId+'. error='+err.message);
+		res.redirect(archive.url);
+	});
+	});
+	
+	app.get('/delete/:archiveId', function(req, res) {
+	var archiveId = req.param('archiveId');
+	opentok.deleteArchive(archiveId, function(err) {
+		if (err) return res.send(500, 'Could not stop archive '+archiveId+'. error='+err.message);
+		res.redirect('/history');
+	});
+	});
+	
+	
 
     // =====================================
     // PROFILE SECTION =====================
@@ -216,19 +306,36 @@ module.exports = function(app, passport) {
     app.post('/search', isLoggedIn, function(req,res){
         console.log(req.body.searchbox);
 
-        // currently just searches through first and last names.
+        // searches names & classes
 
-        User.find(
-            { $and: [       
-                {"local.job" : "Tutor"},
-                { $or: [{"local.firstname": { $regex : req.body.searchbox, $options : 'i'}},{"local.lastname": { $regex : req.body.searchbox, $options : 'i'}},{"local.classes": { $regex : req.body.searchbox, $options : 'i'}}]}
-                ]
-            },
-            function(err,usrs){
-            console.log("\nTutors");
-            console.log(usrs);
-            renderResult(res,usrs,"Tutors",req.user,'search')
-        })
+        if(req.body.searchbox != "" && req.body.selectsearch === ""){
+            console.log("text entered");
+            User.find(
+                { $and: [       
+                    {"local.job" : "Tutor"},
+                    { $or: [{"local.firstname": { $regex : req.body.searchbox, $options : 'i'}},{"local.lastname": { $regex : req.body.searchbox, $options : 'i'}},{"local.classes": { $regex : req.body.searchbox, $options : 'i'}}]}
+                    ]
+                },
+                function(err,usrs){
+                console.log("\nTutors");
+                console.log(usrs);
+                renderResult(res,usrs,"Tutors",req.user,'search')
+            })
+        }
+        else if (req.body.selectsearch != "" && req.body.searchbox === "") {
+            console.log("select search " + req.body.selectsearch);
+            User.find(
+                { $and: [       
+                    {"local.job" : "Tutor"},
+                    {"local.classes": { $regex : req.body.selectsearch, $options : 'i'}}
+                    ]
+                },
+                function(err,usrs){
+                console.log("\nTutors");
+                console.log(usrs);
+                renderResult(res,usrs,"Tutors",req.user,'search')
+            })
+        }
 
     });
 
@@ -254,6 +361,9 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
+	
+
+	
 };
 
 // route middleware to make sure a user is logged in
@@ -265,4 +375,10 @@ function isLoggedIn(req, res, next) {
 
     // if they aren't redirect them to the home page
     res.redirect('/');
-}
+};
+
+
+	
+	
+	
+	

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<%- include includes/header %>
+
+<script src="//static.opentok.com/webrtc/v2.2/js/opentok.min.js"></script>
+
+  <div class="container bump-me">
+
+    <div class="body-content">
+
+
+          <div class="panel panel-default">
+            <div class="panel-heading"> List of Tutors</div>
+            <div class="panel-body">
+              <p>
+				<ul>
+				<li> <a href = "videochat/<%= sessID %>"> Tutor 1 </a></li>
+				<li> <a href = "videochat/<%= sessID %>"> Tutor 2 </a></li>
+				<li> <a href = "videochat/<%= sessID %>"> Tutor 3 </a></li>
+              </p>
+            </div>
+          </div>
+		 </div>
+	</div>
+	
+	<script>
+	
+        var sessID = "<%= sessID %>";
+  
+    </script>   
+
+</div>
+
+	
+<%- include includes/footer %>
+
+</html>
