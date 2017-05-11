@@ -1,10 +1,7 @@
 var sessionIdList = [];
 sessionIdList.push(sessionId);
 
-
-for(var i=0; i < sessionIdList.length; i++){
-
-var session = OT.initSession(sessionIdList[i]);
+var session = OT.initSession(sessionId);
 
 
 var options = {
@@ -12,8 +9,6 @@ var options = {
 	width: 480,
 	height: 320
 };
-
-
 
 
 var publisher = OT.initPublisher("publisher", options);
@@ -26,9 +21,21 @@ session.connect(apiKey, token, function(err, info) {
 });
 
 
+for(var i=0; i < sessionIdList.length; i++){
 
-session.on('streamCreated', function(event) {
-  session.subscribe(event.stream, "subscribers", options);
-});
+	if(sessionIdList[i] == sessionId){
+		session.on('streamCreated', function(event) {
+		session.subscribe(event.stream, "subscribers", options);
+		});
+	}else {
+		for(var j=0; j < sessionIdList.length; j++){
+			if(sessionIdList[i] == sessionIdList[j]){
+				var session = OT.initSession(sessionIdList[j]);
+				session.on('streamCreated', function(event) {
+				session.subscribe(event.stream, "subscribers", options);
+				});
+			}
+		}
+	}
+}
 
-};
