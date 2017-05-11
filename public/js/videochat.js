@@ -1,10 +1,20 @@
+var sessionIdList = [];
+sessionIdList.push(sessionId);
 
-var session = OT.initSession(sessionId);
+
+for(var i=0; i < sessionIdList.length; i++){
+
+var session = OT.initSession(sessionIdList[i]);
+
+
 var options = {
 	insertMode: 'append',
 	width: 480,
 	height: 320
 };
+
+
+
 
 var publisher = OT.initPublisher("publisher", options);
 
@@ -21,4 +31,4 @@ session.on('streamCreated', function(event) {
   session.subscribe(event.stream, "subscribers", options);
 });
 
-
+};

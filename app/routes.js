@@ -3,6 +3,7 @@ var User            = require('../app/models/user');
 var videosession    = require('../app/models/videosession');
 var email			= require('../app/models/emailtutor');
 
+
 var request = require('request');
 var OpenTok = require('opentok');
 
@@ -126,7 +127,7 @@ module.exports = function(app, passport) {
 
 		//Variable keeps track of the session ID for the URL
 		var sessID = videosession.getSessionID();
-
+	
 		var chatURL = ('https://mathboost.herokuapp.com/videochat/' + sessID);
 		//var chatURL = ('http://localhost:8081/videochat/' + sessID);
 
@@ -162,6 +163,7 @@ module.exports = function(app, passport) {
 	//Create First Video Session
 	videosession.createVideoSession();
 
+
 	// Initialize OpenTok
 	var opentok = videosession.getOpentok();
 
@@ -188,7 +190,7 @@ module.exports = function(app, passport) {
 	res.render('videochat.ejs', {
 		apiKey: videosession.getAPIKey(),
 		sessionId: videosession.getSessionID(),
-		token: token
+		token: token,
 	});
 	});
 

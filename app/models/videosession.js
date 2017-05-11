@@ -6,6 +6,7 @@ var OpenTok = require('opentok');
 
 var exports = module.exports = {};
 
+
 //express app
 var videoapp = express();
 
@@ -32,6 +33,7 @@ exports.createVideoSession  = function(){
 	
 	console.log("==================" + session.sessionId + "===============");
     
+
 });
 	return sessID;
 };
