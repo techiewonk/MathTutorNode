@@ -30,9 +30,9 @@ for(var i=0; i < sessionIdList.length; i++){
 	}else {
 		for(var j=0; j < sessionIdList.length; j++){
 			if(sessionIdList[i] == sessionIdList[j]){
-				var session = OT.initSession(sessionIdList[j]);
-				session.on('streamCreated', function(event) {
-				session.subscribe(event.stream, "subscribers", options);
+				var matchSession = OT.initSession(sessionIdList[j]);
+				matchSession.on('streamCreated', function(event) {
+				matchSession.subscribe(event.stream, "subscribers", options);
 				});
 			}
 		}
