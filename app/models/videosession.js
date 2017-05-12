@@ -7,6 +7,7 @@ var OpenTok = require('opentok');
 var exports = module.exports = {};
 
 
+
 //express app
 var videoapp = express();
 
@@ -21,6 +22,7 @@ var opentok = new OpenTok(apiKey, apiSecret);
 var sessID;
 
 
+//Creates a new Opentok Videochat Session
 exports.createVideoSession  = function(){
 	
 	// Create a session and store it in the express app
@@ -33,12 +35,11 @@ exports.createVideoSession  = function(){
 	
 	console.log("==================" + session.sessionId + "===============");
     
-
 });
-	return sessID;
 };
 
 
+//Creates and returns opentok Token needed for users to join session
 exports.createToken = function() {
 	
 	var token = opentok.generateToken(videoapp.get('sessionId'), { role: 'moderator' });
@@ -46,7 +47,6 @@ exports.createToken = function() {
 	return token;
 };
 	
-
 
 //return API Key
 exports.getAPIKey = function(){
@@ -60,18 +60,18 @@ exports.getAPISecret = function() {
 	return apiSecret;
 };
 
+
+//returns initialized opentok object
 exports.getOpentok = function() {
 	
 	return opentok;
 };
 
 
-
-
+//returns SessionID of videochat session
 exports.getSessionID = function(){
 	
 	return sessID;
-	
 };
 
 	

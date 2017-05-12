@@ -1,18 +1,20 @@
 //emailtutor.js
-
+/**
+* Sends email the link of the Opentok Videochat Session to the Tutor
+*/
 const nodemailer = require('nodemailer');
 const xoauth2 = require('xoauth2');
 
-
 var exports = module.exports = {};
 
+//Takes chatURL and tutorEmailAddress as parameters
 exports.sendEmail = function(chatURL){
 
 var transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
     type: 'OAuth2',
-    user: 'mathboosttutoring@gmail.com',
+    user: 'mathboosttutoring@gmail.com', //password: mathboost2017
     clientId: '712036551031-t5p5o9bmdk5vvottpbsg12orgvtshel6.apps.googleusercontent.com',
     clientSecret: 'fbMgoZlTRhNbQY-N05c_07Qo',
     refreshToken: '1/IKm1IPRHgQN7P7X93m_-5mpAT_cBAf2m7NiogsYgyrDDMs6Cx-AcP9edXpzYHgca',
@@ -28,7 +30,8 @@ var transporter = nodemailer.createTransport({
 // setup email data with unicode symbols
 var mailOptions = {
     from: 'Mathboost <mathboosttutoring@gmail.com>', // sender address
-    to: 'tristan1594@yahoo.com', // list of receivers
+    //to: tutorEmailAddress, // list of receivers
+	to: 'tristan1594@yahoo.com', // list of receivers
     subject: 'Your Videochat Link', // Subject line
 	html: "Link to video chat: " + chatURL
 	

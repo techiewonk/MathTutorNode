@@ -1,18 +1,22 @@
-var sessionIdList = [];
-sessionIdList.push(sessionId);
+//videochat.js
+/**
+* Publishes videostreams of both student and tutor
+* Automatically detects when a new user (tutor or student) has "subscribed" to the video session 
+*/
 
+//Initializes session 
 var session = OT.initSession(sessionId);
 
-
+//Determines Video Dimensions
 var options = {
 	insertMode: 'append',
 	width: 480,
 	height: 320
 };
 
-
 var publisher = OT.initPublisher("publisher", options);
 
+//Stream of the "publisher" is shown on the page 
 session.connect(apiKey, token, function(err, info) {
   if(err) {
     alert(err.message || err);
@@ -20,22 +24,17 @@ session.connect(apiKey, token, function(err, info) {
   session.publish(publisher);
 });
 
-
-for(var i=0; i < sessionIdList.length; i++){
-
-	if(sessionIdList[i] == sessionId){
-		session.on('streamCreated', function(event) {
-		session.subscribe(event.stream, "subscribers", options);
-		});
-	}else {
-		for(var j=0; j < sessionIdList.length; j++){
-			if(sessionIdList[i] == sessionIdList[j]){
-				var matchSession = OT.initSession(sessionIdList[j]);
-				matchSession.on('streamCreated', function(event) {
-				matchSession.subscribe(event.stream, "subscribers", options);
-				});
-			}
-		}
-	}
-}
-
+//Streams of "subscribers" joining the session are show on the page
+session.on('streamCreated', function(event,err) {
+	
+  if (err) {
+   showMessage('Streaming connection failed');
+   }
+	
+   session.subscribe(event.stream, "subscribers", options);
+   
+   });
+	
+session.on("streamDestroyed", function (event) {
+  console.log("Stream stopped. Reason: " + event.reason);
+});

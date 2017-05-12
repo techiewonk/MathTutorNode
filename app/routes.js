@@ -1,7 +1,7 @@
 //routes.js
 var User            = require('../app/models/user');
 var videosession    = require('../app/models/videosession');
-var email			= require('../app/models/emailtutor');
+var emailTutor		= require('../app/models/emailtutor');
 
 
 var request = require('request');
@@ -89,10 +89,9 @@ module.exports = function(app, passport) {
     app.get('/payment', isLoggedIn, function (request, response) {
       var tutor = {
           firstName: request.query.fname,
-          lastName: request.query.lname
+          lastName: request.query.lname,
         }
-
-
+	
       gateway.clientToken.generate({}, function (err, res) {
         response.render('payment', {
           clientToken: res.clientToken,
@@ -123,6 +122,7 @@ module.exports = function(app, passport) {
         if (result.success) {
 
 		//creates NEW videochat Session by calling createVideoSession function from videosession.js
+		//this creates a new videochat session for the next student-tutor connection
 		videosession.createVideoSession();
 
 		//Variable keeps track of the session ID for the URL
@@ -130,9 +130,11 @@ module.exports = function(app, passport) {
 	
 		var chatURL = ('https://mathboost.herokuapp.com/videochat/' + sessID);
 		//var chatURL = ('http://localhost:8081/videochat/' + sessID);
-
+		
+		
+		
 		//call sendEmail function from emailtutor.js to send email to tutor
-		  email.sendEmail(chatURL);
+		  emailTutor.sendEmail(chatURL);
 
           response.render('success', {
 			//sessID is passed in order to launch video chat
@@ -144,6 +146,8 @@ module.exports = function(app, passport) {
               amt: transaction.amount
             }
           });
+		  
+		
 
         } else {
           response.sendFile('error.html', {
@@ -158,13 +162,15 @@ module.exports = function(app, passport) {
 	// =====================================
     // VIDEOCHAT SECTION =======================
     // =====================================
-
-
-	//Create First Video Session
+	// Setup OpenTok
+	// Create Initial/First Videochat Session
+	
+	
+	//Create FIRST videochat session
 	videosession.createVideoSession();
-
-
-	// Initialize OpenTok
+	var sessID = videosession.getSessionID();
+	
+	//Initialize OpenTok
 	var opentok = videosession.getOpentok();
 
 
@@ -172,20 +178,11 @@ module.exports = function(app, passport) {
 		res.render('videoAdmin.ejs');
 	});
 
-	app.get('/tutors', function(req, res) {
-		var sessID = videosession.getSessionID();
-
-		res.render('tutors.ejs', {
-		sessID : sessID
-		});
-	});
-
-
+	//Dynamic Webpage Link generated based on sessID (videosession ID)
 	app.get('/videochat/:sessID', function(req, res) {
-
-
-		// generate a fresh token for this client
-		token = videosession.createToken();
+	
+	//generate a fresh token for this client
+	token = videosession.createToken();
 
 	res.render('videochat.ejs', {
 		apiKey: videosession.getAPIKey(),
@@ -194,6 +191,7 @@ module.exports = function(app, passport) {
 	});
 	});
 
+	//History of all recorded videochat sessions
 	app.get('/history', function(req, res) {
 		var page = req.param('page') || 1,
 		offset = (page - 1) * 5;
@@ -206,7 +204,8 @@ module.exports = function(app, passport) {
 		});
 	});
 	});
-
+	
+	//Ability to download recorded videochat sessions
 	app.get('/download/:archiveId', function(req, res) {
 	var archiveId = req.param('archiveId');
 	opentok.getArchive(archiveId, function(err, archive) {
@@ -214,7 +213,8 @@ module.exports = function(app, passport) {
 		res.redirect(archive.url);
 	});
 	});
-
+	
+	//Ability to delete recorded videochat sessions
 	app.get('/delete/:archiveId', function(req, res) {
 	var archiveId = req.param('archiveId');
 	opentok.deleteArchive(archiveId, function(err) {
@@ -222,7 +222,6 @@ module.exports = function(app, passport) {
 		res.redirect('/history');
 	});
 	});
-
 
 
     // =====================================
