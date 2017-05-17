@@ -65,32 +65,9 @@
       </label>
     </div>
         <div class="form-group" id="hidden_div" style="display:none">
-        Select Classes<br>
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Select Classes</button>
-            <select name="classes" class="selectpicker" multiple>
-                <optgroup label="Math">
-                  <option value="Algebra">Algebra</option>
-                  <option value="Trigonometry">Trigonometry</option>
-                  <option value="Calculus">Calculus</option>
-                </optgroup>
-                <optgroup label="Humanities">
-                  <option value="History">History</option>
-                </optgroup>
-            </select>
         </div>
   </fieldset>
-
-        <button type="submit" class="btn btn-warning btn-lg">Signup</button>
-    </form>
-
-    <hr>
-
-    <p>Already have an account? <a href="/login">Login</a></p>
-    <p>Or go <a href="/">home</a>.</p>
-
-</div>
-
-</div>
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
@@ -109,11 +86,11 @@
 
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" value="Trigonometry"> Trigonometry
+                        <input class="form-check-input" name="trig" type="checkbox" value="Trigonometry"> Trigonometry
                         <br>
-                        <input class="form-check-input" type="checkbox" value="Algebra"> Algebra
+                        <input class="form-check-input" name="alg" type="checkbox" value="Algebra"> Algebra
                         <br>
-                        <input class="form-check-input" type="checkbox" value="Calculus"> Calculus
+                        <input class="form-check-input" name="calc" type="checkbox" value="Calculus"> Calculus
                         <br>
                       </label>
                     </div>
@@ -126,7 +103,8 @@
 
                     <div class="form-check">
                       <label class="form-check-label">
-                        Put Class List Here
+                        <input class="form-check-input" name="chem" type="checkbox" value="Chemistry"> Chemistry
+                        <br>
                       </label>
                     </div>
 
@@ -138,7 +116,7 @@
 
                     <div class="form-check">
                       <label class="form-check-label">
-                        <input class="form-check-input" type="checkbox" value="Trigonometry"> History
+                        <input class="form-check-input" name="hist" type="checkbox" value="History"> History
                         <br>
                       </label>
                     </div>
@@ -154,6 +132,18 @@
 
   </div>
 </div>
+        <button type="submit" class="btn btn-warning btn-lg">Signup</button>
+    </form>
+
+    <hr>
+
+    <p>Already have an account? <a href="/login">Login</a></p>
+    <p>Or go <a href="/">home</a>.</p>
+
+</div>
+
+</div>
+
     <script>
         // client side validation
         

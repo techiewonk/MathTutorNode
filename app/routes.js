@@ -60,6 +60,7 @@ module.exports = function(app, passport) {
         successRedirect : '/home', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
+
     }));
 
 
