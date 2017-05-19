@@ -70,6 +70,7 @@ module.exports = function(passport) {
                 newUser.local.job = req.body.jobRadio;
 
                 // these are hard coded to push onto the array
+                // (Data Structures in action!) - ML
                 if(req.body.jobRadio === "Tutor"){
                     if(req.body.trig){newUser.local.classes.push("Trigonometry");}
                     if(req.body.alg){newUser.local.classes.push("Algebra");}
@@ -80,6 +81,7 @@ module.exports = function(passport) {
                 }
 
                 // save the user
+                // seems pretty self explanatory - ML
                 newUser.save(function(err) {
                     console.log(req.body);
                     if (err)
