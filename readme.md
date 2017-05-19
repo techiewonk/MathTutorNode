@@ -23,3 +23,5 @@ Payment Transaction using Braintree
 Link to Heroku for videochat functionality (archve list, videchat):
 
 https://mathboostvideochat.herokuapp.com/tutors
+
+Pages Built Using EJS Templates (through Express and body-parser)

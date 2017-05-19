@@ -68,6 +68,8 @@ module.exports = function(passport) {
                 newUser.local.firstname = req.body.firstname;
                 newUser.local.lastname = req.body.lastname;
                 newUser.local.job = req.body.jobRadio;
+
+                // these are hard coded to push onto the array
                 if(req.body.jobRadio === "Tutor"){
                     if(req.body.trig){newUser.local.classes.push("Trigonometry");}
                     if(req.body.alg){newUser.local.classes.push("Algebra");}

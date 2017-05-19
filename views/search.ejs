@@ -21,6 +21,7 @@
         			</div>
         			<div class="form-group">
 			        <label>Search for Tutors by Class</label><br>
+                    <!-- CURRENTLY HARDCODED DROPDOWN SEARCH -->
 			            <select name="selectsearch" class="selector" id="selectsearch">
 		            		  <option value="" disabled selected hidden>Select Class</option>
 			                <optgroup label="Math">
@@ -31,6 +32,9 @@
 			                <optgroup label="Humanities">
 			                  <option value="History">History</option>
 			                </optgroup>
+                            <optgroup label="Sciences">
+                              <option value="Chemistry">Chemistry</option>
+                            </optgroup>
 			            </select>
 			        </div>
         			<button type="submit" class="btn btn-warning btn-lg">Search</button>
@@ -39,12 +43,14 @@
             </div>
         </div>
 
-        <!-- GLOBAL INFORMATION -->
+        <!-- SEARCH RESULTS -->
         <div class="col-sm-6">
             <div class="well">
                 <h3><span class="fa fa-user"></span>Tutors</h3>
 
                     <p>
+                    <!-- THIS ACCEPTS THE ARRAY GIVEN BY SEARCH -->
+                    <!-- IN ROUTES FILE. PRINTS THE ELSE AT FIRST. -->
                         <% if( Array.isArray(people) ) { %>
                         <ul>
                         <%people.forEach( function( us ){ %>
