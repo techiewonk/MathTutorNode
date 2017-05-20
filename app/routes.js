@@ -276,13 +276,13 @@ module.exports = function(app, passport) {
     // it was kept concise while we worked on other parts of the project
     // and basically for proof of concept.  - ML
     app.post('/update', isLoggedIn, function(req, res){
-        console.log(req.session.passport.user);
-        console.log(req.user);
-        console.log(req.user.local.email);
+        //console.log(req.session.passport.user);
+        //console.log(req.user);
+        //console.log(req.user.local.email);
         User.update({_id:req.session.passport.user}, {
             'local.firstname' : req.body.firstname
         }, function(err, numberAffected,rawResponse) {
-            console.log(req.body.firstname);
+            //console.log(req.body.firstname);
             console.log('profile update error');
         });
         User.find({},function(err,usrs){
