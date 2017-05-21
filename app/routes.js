@@ -91,7 +91,7 @@ module.exports = function(app, passport) {
           firstName: request.query.fname,
           lastName: request.query.lname,
         }
-	
+		
       gateway.clientToken.generate({}, function (err, res) {
         response.render('payment', {
           clientToken: res.clientToken,
@@ -104,7 +104,7 @@ module.exports = function(app, passport) {
     //process payment via credit card or paypal
     // if err, redirect to error page, else success html
     app.post('/process', parseUrlEnconded, function (request, response) {
-
+	  
       var transaction = request.body;
       //console.log('test transact', transaction);
       gateway.transaction.sale({
@@ -113,7 +113,7 @@ module.exports = function(app, passport) {
         customer: {
           firstName: request.user.local.firstname,
           lastName: request.user.local.lastname,
-          email: request.user.local.email
+          
         }
       }, function (err, result) {
 
@@ -127,14 +127,16 @@ module.exports = function(app, passport) {
 
 		//Variable keeps track of the session ID for the URL
 		var sessID = videosession.getSessionID();
-	
+		
 		var chatURL = ('https://mathboost.herokuapp.com/videochat/' + sessID);
 		//var chatURL = ('http://localhost:8081/videochat/' + sessID);
 		
+		//Needs to be written
+		var tutorEmail = 'tristan1594@yahoo.com';
 		
-		
+	
 		//call sendEmail function from emailtutor.js to send email to tutor
-		  emailTutor.sendEmail(chatURL);
+		  emailTutor.sendEmail(chatURL, tutorEmail);
 
           response.render('success', {
 			//sessID is passed in order to launch video chat

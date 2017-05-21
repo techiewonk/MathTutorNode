@@ -13,8 +13,8 @@ var videoapp = express();
 
 
 // Opentok API Key and Secret
-var apiKey = "45827022";
-var apiSecret = "a3e34c57968fb9b6e83119489e05c11145e3ce61";
+var apiKey = "45871382";
+var apiSecret = "313821f7f3206971b36ae7059fa633cfc943d6df";
 
 // Initialize OpenTok
 var opentok = new OpenTok(apiKey, apiSecret);
