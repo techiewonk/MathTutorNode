@@ -6,12 +6,8 @@ Link to working site so far deployed on Heroku:
 Started with Node Authentication Tutorial found here:
 	- https://scotch.io/tutorials/easy-node-authentication-setup-and-local
 
-Going to continue with Refactoring Basic Authenticated:
-	- http://blog.slatepeak.com/refactoring-a-basic-authenticated-api-with-node-express-and-mongo/
-
 Woring on a free sandbox MongoDB from mlab:
 	- http://mlab.com
-
 
 Payment Transaction using Braintree
 	- Run `npm install` to install all dependencies
@@ -23,3 +19,5 @@ Payment Transaction using Braintree
 Link to Heroku for videochat functionality (archve list, videchat):
 
 https://mathboostvideochat.herokuapp.com/tutors
+
+Pages Built Using EJS Templates (through Express and body-parser)

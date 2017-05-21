@@ -65,20 +65,78 @@
       </label>
     </div>
         <div class="form-group" id="hidden_div" style="display:none">
-        Select Classes<br>
-            <select name="classes" class="selectpicker" multiple>
-                <optgroup label="Math">
-                  <option value="Algebra">Algebra</option>
-                  <option value="Trigonometry">Trigonometry</option>
-                  <option value="Calculus">Calculus</option>
-                </optgroup>
-                <optgroup label="Humanities">
-                  <option value="History">History</option>
-                </optgroup>
-            </select>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Select Classes</button>
         </div>
   </fieldset>
+<!-- BEGINS MODAL POPUP CODE -->
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
 
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">List of Classes</h4>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-4">
+                    <!-- MATH COLUMN -->
+                    <fieldset>
+                    <legend>Math</legend>
+
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" name="trig" type="checkbox" value="Trigonometry"> Trigonometry
+                        <br>
+                        <input class="form-check-input" name="alg" type="checkbox" value="Algebra"> Algebra
+                        <br>
+                        <input class="form-check-input" name="calc" type="checkbox" value="Calculus"> Calculus
+                        <br>
+                      </label>
+                    </div>
+
+                    </fieldset>
+                </div>
+              <div class="col-md-4">
+              <!-- SCIENCE COLUMN -->
+                <fieldset>
+                    <legend>Science</legend>
+
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" name="chem" type="checkbox" value="Chemistry"> Chemistry
+                        <br>
+                      </label>
+                    </div>
+
+                    </fieldset>
+              </div>
+              <div class="col-md-4">
+              <!-- HUMANITIES COLUMN -->
+                <fieldset>
+                    <legend>Humanities</legend>
+
+                    <div class="form-check">
+                      <label class="form-check-label">
+                        <input class="form-check-input" name="hist" type="checkbox" value="History"> History
+                        <br>
+                      </label>
+                    </div>
+
+                    </fieldset></div>
+            </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- END OF MODAL - MODAL MUST BE WITHIN THE FORM -->
         <button type="submit" class="btn btn-warning btn-lg">Signup</button>
     </form>
 
@@ -90,6 +148,7 @@
 </div>
 
 </div>
+
     <script>
         // client side validation
         

@@ -60,6 +60,7 @@ module.exports = function(app, passport) {
         successRedirect : '/home', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
+
     }));
 
 
@@ -240,14 +241,19 @@ module.exports = function(app, passport) {
     });
 
 
+    // =====================================
+    // RENDER RESULTS ======================
+    // =====================================
     // wrote this as a multipurpose function to deliver an array of users
     // to the page. the page will accept the array as 'people'.
     // userlist page - just delivers a full list
     // search page - will deliver a list that fulfills the criteria
+    // it's a very short function but basically runs the user list and search results - ML
     function renderResult(res,usrs=false,msg,user,page){
-        //page will change depending on what page is running this function
+        // page will change depending on what page is running this function
         res.render(page + '.ejs', {message: msg, people:usrs, user : user},
-
+            // the function is rendering the page requested, along with error messages, the array of users,
+            // and the currently logged in user. This function below breaks out if there's an error.
             function (err,result){
                 if (!err){res.end(result);}
                 else {res.end('Oops!');
@@ -268,21 +274,19 @@ module.exports = function(app, passport) {
     })
 
     // process the update form
+    // this needs to be updated to actually update the rest of the user fields
+    // it was kept concise while we worked on other parts of the project
+    // and basically for proof of concept.  - ML
     app.post('/update', isLoggedIn, function(req, res){
-        console.log(req.session.passport.user);
-        console.log(req.user);
-        console.log(req.user.local.email);
+        //console.log(req.session.passport.user);
+        //console.log(req.user);
+        //console.log(req.user.local.email);
         User.update({_id:req.session.passport.user}, {
             'local.firstname' : req.body.firstname
         }, function(err, numberAffected,rawResponse) {
-            console.log(req.body.firstname);
+            //console.log(req.body.firstname);
             console.log('profile update error');
         });
-        //res.render('index.ejs', {
-        //    user : req.user
-        //});
-        // changed this to go to the profile page instead of the index
-        // why did I make it go to the index?
         User.find({},function(err,usrs){
             renderResult(res,usrs,"User List",req.user,'profile')
         });
@@ -308,7 +312,8 @@ module.exports = function(app, passport) {
     // SEARCH TUTORS =======================
     // =====================================
 
-    //needs to be written
+    // This works, but when doing multiple searches, it runs into errors
+    // It doesn't re-search very well if you switch back and forth - ML
     app.get('/search', isLoggedIn, function(req,res) {
         renderResult(res,false,"Tutors",req.user,'search')
     });
@@ -317,9 +322,10 @@ module.exports = function(app, passport) {
         console.log(req.body.searchbox);
 
         // searches names & classes
-
+        // This is using MongoDB - ML
+        // https://docs.mongodb.com/manual/reference/method/db.collection.find  
         if(req.body.searchbox != "" && req.body.selectsearch === ""){
-            console.log("text entered");
+            //console.log("text entered");
             User.find(
                 { $and: [
                     {"local.job" : "Tutor"},
@@ -327,13 +333,13 @@ module.exports = function(app, passport) {
                     ]
                 },
                 function(err,usrs){
-                console.log("\nTutors");
-                console.log(usrs);
+                //console.log("\nTutors");
+                //console.log(usrs);
                 renderResult(res,usrs,"Tutors",req.user,'search')
             })
         }
         else if (req.body.selectsearch != "" && req.body.searchbox === "") {
-            console.log("select search " + req.body.selectsearch);
+            //console.log("select search " + req.body.selectsearch);
             User.find(
                 { $and: [
                     {"local.job" : "Tutor"},
@@ -341,8 +347,8 @@ module.exports = function(app, passport) {
                     ]
                 },
                 function(err,usrs){
-                console.log("\nTutors");
-                console.log(usrs);
+                //console.log("\nTutors");
+                //console.log(usrs);
                 renderResult(res,usrs,"Tutors",req.user,'search')
             })
         }
@@ -377,6 +383,9 @@ module.exports = function(app, passport) {
 };
 
 // route middleware to make sure a user is logged in
+// in further updates, we'll need to create a user session in order to check
+// that a user is *currently* logged in, and update that variable in the User model
+// (and also update when the user logs out) - ML
 function isLoggedIn(req, res, next) {
 
     // if user is authenticated in the session, carry on

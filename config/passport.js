@@ -68,18 +68,22 @@ module.exports = function(passport) {
                 newUser.local.firstname = req.body.firstname;
                 newUser.local.lastname = req.body.lastname;
                 newUser.local.job = req.body.jobRadio;
+
+                // these are hard coded to push onto the array
+                // (Data Structures in action!) - ML
                 if(req.body.jobRadio === "Tutor"){
-                    if(Array.isArray(req.body.classes)){
-                        for(var i=0;i<req.body.classes.length;i++){
-                            newUser.local.classes.push(req.body.classes[i]);
-                        }}
-                    else {
-                        newUser.local.classes.push(req.body.classes);
-                    }
+                    if(req.body.trig){newUser.local.classes.push("Trigonometry");}
+                    if(req.body.alg){newUser.local.classes.push("Algebra");}
+                    if(req.body.calc){newUser.local.classes.push("Calculus");}
+                    if(req.body.hist){newUser.local.classes.push("History");}
+                    if(req.body.chem){newUser.local.classes.push("Chemistry");}
+                    
                 }
 
                 // save the user
+                // seems pretty self explanatory - ML
                 newUser.save(function(err) {
+                    console.log(req.body);
                     if (err)
                         throw err;
                     return done(null, newUser);
